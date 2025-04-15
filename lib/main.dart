@@ -3,7 +3,7 @@ import 'package:meal/core/routes/app_router.dart';
 import 'package:meal/core/routes/app_routes.dart';
 import 'package:meal/core/theme/app_theme.dart';
 
-import 'injection_container.dart' as di;
+import 'core/injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

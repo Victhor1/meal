@@ -9,4 +9,7 @@ class MealRepositoryImpl extends MealRepository {
 
   @override
   Future<List<Meal>> getMeals() async => await remoteDataSource.getMeals();
+
+  @override
+  Future<Meal> getMealDetails(String id) async => await remoteDataSource.getMealDetails(id);
 }

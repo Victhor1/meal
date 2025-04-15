@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/features/meals/domain/usecases/get_meals.dart';
-import 'package:meal/features/meals/presentation/bloc/meal_event.dart';
-import 'package:meal/features/meals/presentation/bloc/meal_state.dart';
+import 'package:meal/features/meals/presentation/bloc/list/meal_event.dart';
+import 'package:meal/features/meals/presentation/bloc/list/meal_state.dart';
 
 class MealBloc extends Bloc<MealEvent, MealState> {
   final GetMeals getMeals;

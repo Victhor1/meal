@@ -1,17 +1,24 @@
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meal/features/meals/data/datasources/meal_remote_data_source.dart';
 import 'package:meal/features/meals/data/repositories/meal_repository.impl.dart';
 import 'package:meal/features/meals/domain/repositories/meal_repository.dart';
+import 'package:meal/features/meals/domain/usecases/get_meal_details.dart';
 import 'package:meal/features/meals/domain/usecases/get_meals.dart';
-import 'package:meal/features/meals/presentation/bloc/meal_bloc.dart';
+import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_bloc.dart';
+import 'package:meal/features/meals/presentation/bloc/list/meal_bloc.dart';
 
-final sl = GetIt.instance;
-
-Future<void> init() async {
+Future<void> initMeals(GetIt sl) async {
+  // Blocs
   sl.registerFactory(() => MealBloc(sl()));
+  sl.registerFactory(() => MealDetailBloc(sl()));
+
+  // Use cases
   sl.registerLazySingleton(() => GetMeals(sl()));
+  sl.registerLazySingleton(() => GetMealDetails(sl()));
+
+  // Repository
   sl.registerLazySingleton<MealRepository>(() => MealRepositoryImpl(remoteDataSource: sl()));
+
+  // Data source
   sl.registerLazySingleton<MealRemoteDataSource>(() => MealRemoteDataSourceImpl(dio: sl()));
-  sl.registerLazySingleton(() => Dio());
 }
