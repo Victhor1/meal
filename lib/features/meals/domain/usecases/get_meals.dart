@@ -6,5 +6,5 @@ class GetMeals {
 
   GetMeals(this.repository);
 
-  Future<List<Meal>> call() async => await repository.getMeals();
+  Future<List<Meal>> call({String? search}) async => await repository.getMeals(search: search);
 }

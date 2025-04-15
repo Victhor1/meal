@@ -10,7 +10,7 @@ class MealBloc extends Bloc<MealEvent, MealState> {
     on<LoadMeals>((event, emit) async {
       emit(MealLoading());
       try {
-        final meals = await getMeals();
+        final meals = await getMeals(search: event.search);
         emit(MealLoaded(meals));
       } catch (e) {
         emit(MealError(e.toString()));

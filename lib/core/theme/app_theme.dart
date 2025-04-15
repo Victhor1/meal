@@ -13,6 +13,14 @@ class AppTheme {
     useMaterial3: true,
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(backgroundColor: Colors.white, foregroundColor: Colors.black, elevation: 0),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: TextStyle(color: Colors.grey[400]),
+      labelStyle: const TextStyle(color: Colors.black),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+      filled: true,
+      fillColor: Colors.grey[100],
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,

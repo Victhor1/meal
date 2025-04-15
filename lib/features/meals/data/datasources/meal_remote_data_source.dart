@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:meal/features/meals/data/models/meal_model.dart';
 
 abstract class MealRemoteDataSource {
-  Future<List<MealModel>> getMeals();
+  Future<List<MealModel>> getMeals({String? search});
   Future<MealModel> getMealDetails(String id);
 }
 
@@ -14,10 +14,17 @@ class MealRemoteDataSourceImpl implements MealRemoteDataSource {
   MealRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<List<MealModel>> getMeals() async {
+  Future<List<MealModel>> getMeals({String? search}) async {
     try {
-      final response = await dio.get('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+      final String url =
+          search != null
+              ? 'https://www.themealdb.com/api/json/v1/1/search.php?s=$search'
+              : 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+
+      final response = await dio.get(url);
       if (response.statusCode == 200) {
+        if (response.data['meals'] == null) return [];
+
         final List<dynamic> data = response.data['meals'];
         return data.map((meal) => MealModel.fromJson(meal)).toList();
       } else {
