@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dio/dio.dart';
+import 'package:meal/core/network/dio_client.dart';
 import 'package:meal/features/meals/data/models/meal_model.dart';
 
 abstract class MealRemoteDataSource {
@@ -9,9 +9,9 @@ abstract class MealRemoteDataSource {
 }
 
 class MealRemoteDataSourceImpl implements MealRemoteDataSource {
-  final Dio dio;
+  final DioClient _dioClient;
 
-  MealRemoteDataSourceImpl({required this.dio});
+  MealRemoteDataSourceImpl(this._dioClient);
 
   @override
   Future<List<MealModel>> getMeals({String? search}) async {
@@ -21,7 +21,7 @@ class MealRemoteDataSourceImpl implements MealRemoteDataSource {
               ? 'https://www.themealdb.com/api/json/v1/1/search.php?s=$search'
               : 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 
-      final response = await dio.get(url);
+      final response = await _dioClient.dio.get(url);
       if (response.statusCode == 200) {
         if (response.data['meals'] == null) return [];
 
@@ -39,7 +39,7 @@ class MealRemoteDataSourceImpl implements MealRemoteDataSource {
   Future<MealModel> getMealDetails(String id) async {
     try {
       int randomNumber() => Random().nextInt(100);
-      final response = await dio.get('https://www.themealdb.com/api/json/v1/1/lookup.php?i=$id');
+      final response = await _dioClient.dio.get('https://www.themealdb.com/api/json/v1/1/lookup.php?i=$id');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['meals'];
         MealModel meal = MealModel.fromJson(data.first);

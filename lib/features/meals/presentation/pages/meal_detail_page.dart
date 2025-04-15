@@ -2,6 +2,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/core/theme/app_colors.dart';
+import 'package:meal/core/utils/logger.dart';
 import 'package:meal/core/utils/share_util.dart';
 import 'package:meal/core/utils/url_launcher_util.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_bloc.dart';
@@ -100,8 +101,7 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                                 youtubeUrl: state.meal.strYoutube,
                               );
                             } catch (e) {
-                              // todo: remove this
-                              print(e);
+                              Logger().e('Error sharing meal: $e', tag: 'MealDetailPage');
                             }
                           }
                         },
@@ -171,10 +171,12 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                                       decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
                                       child: IconButton(
                                         onPressed: () async {
-                                          try {
-                                            await UrlLauncherUtil.launchYoutube(state.meal.strYoutube ?? '');
-                                          } catch (e) {
-                                            print(e);
+                                          if (state is MealDetailLoaded) {
+                                            try {
+                                              await UrlLauncherUtil.launchYoutube(state.meal.strYoutube ?? '');
+                                            } catch (e) {
+                                              Logger().e('Error launching YouTube: $e', tag: 'MealDetailPage');
+                                            }
                                           }
                                         },
                                         icon: Icon(Icons.play_arrow_rounded, color: Colors.white),
