@@ -171,12 +171,10 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                                       decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
                                       child: IconButton(
                                         onPressed: () async {
-                                          if (state is MealDetailLoaded) {
-                                            try {
-                                              await UrlLauncherUtil.launchYoutube(state.meal.strYoutube ?? '');
-                                            } catch (e) {
-                                              Logger().e('Error launching YouTube: $e', tag: 'MealDetailPage');
-                                            }
+                                          try {
+                                            await UrlLauncherUtil.launchYoutube(state.meal.strYoutube ?? '');
+                                          } catch (e) {
+                                            Logger().e('Error launching YouTube: $e', tag: 'MealDetailPage');
                                           }
                                         },
                                         icon: Icon(Icons.play_arrow_rounded, color: Colors.white),

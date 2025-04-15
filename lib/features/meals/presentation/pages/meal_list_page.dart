@@ -111,27 +111,32 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
                 MealLoaded() =>
                   state.meals.isEmpty
                       ? emptyWidget(message: 'No meals found')
-                      : ListView.separated(
-                        padding: const EdgeInsets.all(20),
-                        itemCount: state.meals.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 20),
-                        itemBuilder: (context, index) {
-                          final animation = CurvedAnimation(
-                            parent: _animationController,
-                            curve: Interval(index * 0.1, 1.0, curve: Curves.easeOut),
-                          );
-
-                          return FadeTransition(
-                            opacity: animation,
-                            child: SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0.0, 0.3),
-                                end: Offset.zero,
-                              ).animate(animation),
-                              child: _buildMealCard(state.meals[index]),
-                            ),
-                          );
+                      : RefreshIndicator(
+                        onRefresh: () async {
+                          context.read<MealBloc>().add(LoadMeals());
                         },
+                        child: ListView.separated(
+                          padding: const EdgeInsets.all(20),
+                          itemCount: state.meals.length,
+                          separatorBuilder: (context, index) => const SizedBox(height: 20),
+                          itemBuilder: (context, index) {
+                            final animation = CurvedAnimation(
+                              parent: _animationController,
+                              curve: Interval(index * 0.1, 1.0, curve: Curves.easeOut),
+                            );
+
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: const Offset(0.0, 0.3),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: _buildMealCard(state.meals[index]),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                 MealError() => Center(child: errorWidget(message: state.message)),
                 _ => const Center(child: Text('No meals found')),
