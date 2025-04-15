@@ -21,10 +21,11 @@ class AppRouter {
           settings: settings,
         );
       case AppRoutes.mealDetail:
+        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider(
-                create: (_) => di.sl<MealDetailBloc>()..add(LoadMealDetail(settings.arguments as String)),
+                create: (_) => di.sl<MealDetailBloc>()..add(LoadMealDetail(args['id'] as String)),
                 child: const MealDetailPage(),
               ),
           settings: settings,

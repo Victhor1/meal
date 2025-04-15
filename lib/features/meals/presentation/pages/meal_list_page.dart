@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/core/routes/app_routes.dart';
+import 'package:meal/core/theme/app_colors.dart';
 import 'package:meal/features/meals/domain/entities/meal.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_bloc.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_state.dart';
@@ -13,9 +14,10 @@ class MealListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🍗 What do you want to eat today?', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('🍗 Meal App', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: false,
         actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        surfaceTintColor: AppColors.primary,
       ),
       body: SafeArea(
         child: BlocBuilder<MealBloc, MealState>(
@@ -29,7 +31,12 @@ class MealListPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   Meal meal = state.meals[index];
                   return GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, AppRoutes.mealDetail, arguments: meal.idMeal),
+                    onTap:
+                        () => Navigator.pushNamed(
+                          context,
+                          AppRoutes.mealDetail,
+                          arguments: {'id': meal.idMeal, 'image': meal.strMealThumb},
+                        ),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.black38,
@@ -41,7 +48,10 @@ class MealListPage extends StatelessWidget {
                         child: Stack(
                           alignment: Alignment.bottomCenter,
                           children: [
-                            extendedImage(imagePath: meal.strMealThumb ?? '', height: 300),
+                            Hero(
+                              tag: 'meal-image-${meal.idMeal}',
+                              child: extendedImage(imagePath: meal.strMealThumb ?? '', height: 300),
+                            ),
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(40)),

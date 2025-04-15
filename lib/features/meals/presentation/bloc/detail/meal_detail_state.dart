@@ -8,8 +8,9 @@ class MealDetailLoading extends MealDetailState {}
 
 class MealDetailLoaded extends MealDetailState {
   final Meal meal;
+  final bool isIngredientsSelected;
 
-  MealDetailLoaded(this.meal);
+  MealDetailLoaded(this.meal, {this.isIngredientsSelected = true});
 }
 
 class MealDetailError extends MealDetailState {

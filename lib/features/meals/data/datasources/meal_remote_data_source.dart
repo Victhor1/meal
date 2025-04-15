@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:meal/features/meals/data/models/meal_model.dart';
 
@@ -29,10 +31,17 @@ class MealRemoteDataSourceImpl implements MealRemoteDataSource {
   @override
   Future<MealModel> getMealDetails(String id) async {
     try {
+      int randomNumber() => Random().nextInt(100);
       final response = await dio.get('https://www.themealdb.com/api/json/v1/1/lookup.php?i=$id');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['meals'];
-        return MealModel.fromJson(data.first);
+        MealModel meal = MealModel.fromJson(data.first);
+
+        meal.intViews = randomNumber();
+        meal.intCalories = randomNumber();
+        meal.intMinutes = randomNumber();
+
+        return meal;
       } else {
         throw Exception('Failed to load meal details');
       }

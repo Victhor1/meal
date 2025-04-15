@@ -16,5 +16,19 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
         emit(MealDetailError(e.toString()));
       }
     });
+
+    on<SelectIngredientsTab>((event, emit) {
+      if (state is MealDetailLoaded) {
+        final currentState = state as MealDetailLoaded;
+        emit(MealDetailLoaded(currentState.meal, isIngredientsSelected: true));
+      }
+    });
+
+    on<SelectInstructionsTab>((event, emit) {
+      if (state is MealDetailLoaded) {
+        final currentState = state as MealDetailLoaded;
+        emit(MealDetailLoaded(currentState.meal, isIngredientsSelected: false));
+      }
+    });
   }
 }
