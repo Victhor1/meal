@@ -3,11 +3,26 @@ import 'package:meal/core/theme/app_colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
+    //fontFamily: GoogleFonts.poppins().fontFamily,
     primaryColor: AppColors.primary,
-    colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary, brightness: Brightness.light),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: AppColors.primary,
+      brightness: Brightness.light,
+      primary: AppColors.primary,
+    ),
     useMaterial3: true,
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(backgroundColor: Colors.white, foregroundColor: Colors.black, elevation: 0),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        minimumSize: const Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 12,
+        shadowColor: AppColors.primary,
+      ),
+    ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
