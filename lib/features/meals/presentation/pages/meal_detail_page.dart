@@ -59,11 +59,14 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args == null || args is! Map<String, dynamic>) {
-      return const Scaffold(body: Center(child: Text('Error: Invalid arguments')));
+      return Scaffold(body: errorWidget(message: 'Error: Invalid arguments'));
     }
 
     final String mealId = args['id'] as String;
     final String? imageUrl = args['image'] as String?;
+    final String? tag = args['tag'] ?? 'meal';
+
+    Logger().i('tag meal: $tag');
 
     return Scaffold(
       body: BlocListener<MealDetailBloc, MealDetailState>(
@@ -139,7 +142,7 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                   ],
                   flexibleSpace: FlexibleSpaceBar(
                     background: Hero(
-                      tag: 'meal-image-$mealId',
+                      tag: '$tag-image-$mealId',
                       child: ClipRRect(
                         borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(16),
@@ -234,10 +237,9 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                                           duration: const Duration(milliseconds: 300),
                                           curve: Curves.easeInOut,
                                           decoration: BoxDecoration(
-                                            color:
-                                                state.isIngredientsSelected
-                                                    ? const Color(0xff222831)
-                                                    : Colors.transparent,
+                                            color: state.isIngredientsSelected
+                                                ? const Color(0xff222831)
+                                                : Colors.transparent,
                                             borderRadius: BorderRadius.circular(16),
                                           ),
                                           padding: const EdgeInsets.all(16),
@@ -262,10 +264,9 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                                           duration: const Duration(milliseconds: 300),
                                           curve: Curves.easeInOut,
                                           decoration: BoxDecoration(
-                                            color:
-                                                !state.isIngredientsSelected
-                                                    ? const Color(0xff222831)
-                                                    : Colors.transparent,
+                                            color: !state.isIngredientsSelected
+                                                ? const Color(0xff222831)
+                                                : Colors.transparent,
                                             borderRadius: BorderRadius.circular(16),
                                           ),
                                           padding: const EdgeInsets.all(16),
@@ -300,70 +301,69 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                                     ),
                                   );
                                 },
-                                child:
-                                    state.isIngredientsSelected
-                                        ? Column(
-                                          key: const ValueKey('ingredients'),
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              'Ingredients',
-                                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                            ),
-                                            const SizedBox(height: 16),
-                                            ...state.meal.ingredients.map(
-                                              (ingredient) => Padding(
-                                                padding: const EdgeInsets.only(bottom: 8.0),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      width: 8,
-                                                      height: 8,
-                                                      decoration: const BoxDecoration(
-                                                        color: AppColors.primary,
-                                                        shape: BoxShape.circle,
-                                                      ),
+                                child: state.isIngredientsSelected
+                                    ? Column(
+                                        key: const ValueKey('ingredients'),
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'Ingredients',
+                                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          ...state.meal.ingredients.map(
+                                            (ingredient) => Padding(
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 8,
+                                                    height: 8,
+                                                    decoration: const BoxDecoration(
+                                                      color: AppColors.primary,
+                                                      shape: BoxShape.circle,
                                                     ),
-                                                    const SizedBox(width: 8),
-                                                    Expanded(
-                                                      child: Text(
-                                                        ingredient,
-                                                        style: const TextStyle(fontSize: 16, color: Color(0xff222831)),
-                                                      ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Text(
+                                                      ingredient,
+                                                      style: const TextStyle(fontSize: 16, color: Color(0xff222831)),
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        )
-                                        : Column(
-                                          key: const ValueKey('instructions'),
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              'Instructions',
-                                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      )
+                                    : Column(
+                                        key: const ValueKey('instructions'),
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'Instructions',
+                                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xffF7FBFD),
+                                              borderRadius: BorderRadius.circular(16),
                                             ),
-                                            const SizedBox(height: 16),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xffF7FBFD),
-                                                borderRadius: BorderRadius.circular(16),
+                                            padding: const EdgeInsets.all(16),
+                                            child: Text(
+                                              state.meal.strInstructions ?? '',
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                height: 1.5,
+                                                color: Color(0xff222831),
                                               ),
-                                              padding: const EdgeInsets.all(16),
-                                              child: Text(
-                                                state.meal.strInstructions ?? '',
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  height: 1.5,
-                                                  color: Color(0xff222831),
-                                                ),
-                                                textAlign: TextAlign.justify,
-                                              ),
+                                              textAlign: TextAlign.justify,
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
+                                      ),
                               ),
                             ],
                           ),

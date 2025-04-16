@@ -39,7 +39,7 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
         final isLiked = !currentState.isLiked;
 
         if (isLiked) {
-          await favoritesRepository.saveFavorite(currentState.meal.idMeal ?? '');
+          await favoritesRepository.saveFavorite(currentState.meal);
           emit(MealDetailToggleLike('Added to favorites'));
         } else {
           await favoritesRepository.removeFavorite(currentState.meal.idMeal ?? '');

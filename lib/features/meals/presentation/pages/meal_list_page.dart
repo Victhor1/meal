@@ -66,20 +66,19 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
               ),
             );
           },
-          child:
-              _isSearching
-                  ? TextField(
-                    controller: _searchController,
-                    autofocus: true,
-                    style: const TextStyle(color: Colors.black),
-                    decoration: const InputDecoration(
-                      hintText: 'Search meals...',
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                    ),
-                    onChanged: _onSearchChanged,
-                  )
-                  : const Text('🍗 Meal App', style: TextStyle(fontWeight: FontWeight.bold)),
+          child: _isSearching
+              ? TextField(
+                  controller: _searchController,
+                  autofocus: true,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
+                    hintText: 'Search meals...',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                  onChanged: _onSearchChanged,
+                )
+              : const Text('🍗 Meal App', style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         centerTitle: false,
         actions: [
@@ -110,10 +109,9 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
             builder: (context, state) {
               return switch (state) {
                 MealLoading() => loadingWidget(message: 'Loading meals...'),
-                MealLoaded() =>
-                  state.meals.isEmpty
-                      ? emptyWidget(message: 'No meals found')
-                      : RefreshIndicator(
+                MealLoaded() => state.meals.isEmpty
+                    ? emptyWidget(message: 'No meals found')
+                    : RefreshIndicator(
                         onRefresh: () async {
                           context.read<MealBloc>().add(LoadMeals());
                         },
@@ -152,12 +150,11 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
 
   Widget _buildMealCard(Meal meal) {
     return GestureDetector(
-      onTap:
-          () => Navigator.pushNamed(
-            context,
-            AppRoutes.mealDetail,
-            arguments: {'id': meal.idMeal, 'image': meal.strMealThumb},
-          ),
+      onTap: () => Navigator.pushNamed(
+        context,
+        AppRoutes.mealDetail,
+        arguments: {'id': meal.idMeal, 'image': meal.strMealThumb, 'tag': 'list'},
+      ),
       child: Container(
         height: 300,
         margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -169,7 +166,7 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
           children: [
             // Imagen de fondo con efecto de gradiente
             Hero(
-              tag: 'meal-image-${meal.idMeal}',
+              tag: 'list-image-${meal.idMeal}',
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
                 child: Stack(

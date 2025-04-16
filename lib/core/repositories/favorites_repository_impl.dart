@@ -1,4 +1,5 @@
 import 'package:meal/features/meals/data/datasources/meal_local_data_source.dart';
+import 'package:meal/features/meals/domain/entities/meal.dart';
 import 'package:meal/features/meals/domain/repositories/favorites_repository.dart';
 
 class FavoritesRepositoryImpl implements FavoritesRepository {
@@ -7,10 +8,10 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
   FavoritesRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<List<String>> getFavorites() => localDataSource.getFavorites();
+  Future<List<Meal>> getFavorites() => localDataSource.getFavorites();
 
   @override
-  Future<void> saveFavorite(String mealId) => localDataSource.saveFavorite(mealId);
+  Future<void> saveFavorite(Meal meal) => localDataSource.saveFavorite(meal);
 
   @override
   Future<void> removeFavorite(String mealId) => localDataSource.removeFavorite(mealId);
