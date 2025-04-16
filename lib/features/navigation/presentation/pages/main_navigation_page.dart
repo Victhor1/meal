@@ -4,6 +4,7 @@ import 'package:meal/core/injection_container.dart' as di;
 import 'package:meal/features/meals/presentation/bloc/list/meal_bloc.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_event.dart';
 import 'package:meal/features/meals/presentation/pages/meal_list_page.dart';
+import 'package:meal/features/profile/presentation/pages/profile_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});
@@ -18,7 +19,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   final List<Widget> _pages = [
     BlocProvider(create: (_) => di.sl<MealBloc>()..add(LoadMeals()), child: const MealListPage()),
     const Center(child: Text('Favoritos')), // todo: reemplazar por FavoritesPage()
-    const Center(child: Text('Perfil')), // todo: reemplazar por ProfilePage()
+    ProfilePage(),
   ];
 
   @override
