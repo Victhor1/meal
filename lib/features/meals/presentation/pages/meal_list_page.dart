@@ -11,6 +11,7 @@ import 'package:meal/features/meals/presentation/bloc/list/meal_state.dart';
 import 'package:meal/shared/widgets/empty_widget.dart';
 import 'package:meal/shared/widgets/error_widget.dart';
 import 'package:meal/shared/widgets/extended_image_widget.dart';
+import 'package:meal/shared/widgets/loading_widget.dart';
 
 class MealListPage extends StatefulWidget {
   const MealListPage({super.key});
@@ -108,7 +109,7 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
           child: BlocBuilder<MealBloc, MealState>(
             builder: (context, state) {
               return switch (state) {
-                MealLoading() => const Center(child: CircularProgressIndicator()),
+                MealLoading() => loadingWidget(message: 'Loading meals...'),
                 MealLoaded() =>
                   state.meals.isEmpty
                       ? emptyWidget(message: 'No meals found')

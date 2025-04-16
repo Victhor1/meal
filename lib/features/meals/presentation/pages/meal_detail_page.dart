@@ -10,7 +10,10 @@ import 'package:meal/core/utils/url_launcher_util.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_bloc.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_event.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_state.dart';
+import 'package:meal/shared/widgets/empty_widget.dart';
+import 'package:meal/shared/widgets/error_widget.dart';
 import 'package:meal/shared/widgets/extended_image_widget.dart';
+import 'package:meal/shared/widgets/loading_widget.dart';
 
 class MealDetailPage extends StatefulWidget {
   const MealDetailPage({super.key});
@@ -156,9 +159,9 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                   ),
                 ),
                 if (state is MealDetailLoading)
-                  const SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
+                  SliverFillRemaining(child: loadingWidget(message: 'Loading meal detail...'))
                 else if (state is MealDetailError)
-                  SliverFillRemaining(child: Center(child: Text(state.message)))
+                  SliverFillRemaining(child: errorWidget(message: state.message))
                 else if (state is MealDetailLoaded)
                   SliverToBoxAdapter(
                     child: FadeTransition(
@@ -190,20 +193,26 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                                     style: const TextStyle(fontSize: 16, color: Color(0xff88879C)),
                                   ),
                                   const Spacer(),
-                                  AvatarGlow(
-                                    glowColor: AppColors.primary,
-                                    glowCount: 2,
-                                    child: Container(
-                                      decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.primary),
-                                      child: IconButton(
-                                        onPressed: () async {
-                                          try {
-                                            await UrlLauncherUtil.launchYoutube(state.meal.strYoutube ?? '');
-                                          } catch (e) {
-                                            Logger().e('Error launching YouTube: $e', tag: 'MealDetailPage');
-                                          }
-                                        },
-                                        icon: Icon(Icons.play_arrow_rounded, color: Colors.white),
+                                  Visibility(
+                                    visible: state.meal.strYoutube != null && state.meal.strYoutube!.isNotEmpty,
+                                    child: AvatarGlow(
+                                      glowColor: AppColors.primary,
+                                      glowCount: 2,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.primary,
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () async {
+                                            try {
+                                              await UrlLauncherUtil.launchYoutube(state.meal.strYoutube ?? '');
+                                            } catch (e) {
+                                              Logger().e('Error launching YouTube: $e', tag: 'MealDetailPage');
+                                            }
+                                          },
+                                          icon: Icon(Icons.play_arrow_rounded, color: Colors.white),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -363,7 +372,7 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                     ),
                   )
                 else
-                  const SliverFillRemaining(child: Center(child: Text('No meal detail found'))),
+                  SliverFillRemaining(child: emptyWidget(message: 'No meal detail found')),
               ],
             );
           },
