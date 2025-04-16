@@ -9,12 +9,19 @@ class MealDetailLoading extends MealDetailState {}
 class MealDetailLoaded extends MealDetailState {
   final Meal meal;
   final bool isIngredientsSelected;
+  final bool isLiked;
 
-  MealDetailLoaded(this.meal, {this.isIngredientsSelected = true});
+  MealDetailLoaded(this.meal, {this.isIngredientsSelected = true, this.isLiked = false});
 }
 
 class MealDetailError extends MealDetailState {
   final String message;
 
   MealDetailError(this.message);
+}
+
+class MealDetailToggleLike extends MealDetailState {
+  final String message;
+
+  MealDetailToggleLike(this.message);
 }

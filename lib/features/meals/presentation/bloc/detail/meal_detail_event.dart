@@ -8,3 +8,7 @@ class LoadMealDetail extends MealDetailEvent {
 class SelectIngredientsTab extends MealDetailEvent {}
 
 class SelectInstructionsTab extends MealDetailEvent {}
+
+class OpenYoutubeVideo extends MealDetailEvent {}
+
+class ToggleLike extends MealDetailEvent {}

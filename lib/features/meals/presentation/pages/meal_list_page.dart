@@ -194,7 +194,7 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
                       ),
                     ),
                     SizedBox(width: 10),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border), color: Colors.white),
+                    const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
                   ],
                 ),
               ),

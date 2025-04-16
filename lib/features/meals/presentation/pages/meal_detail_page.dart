@@ -1,4 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/core/theme/app_colors.dart';
@@ -66,6 +68,16 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
           if (state is MealDetailLoaded) {
             _animationController.forward();
           }
+
+          if (state is MealDetailToggleLike) {
+            CherryToast.success(
+              title: Text(state.message),
+              toastPosition: Position.bottom,
+              animationCurve: Curves.easeInOut,
+              animationType: AnimationType.fromBottom,
+              animationDuration: const Duration(milliseconds: 200),
+            ).show(context);
+          }
         },
         child: BlocBuilder<MealDetailBloc, MealDetailState>(
           builder: (context, state) {
@@ -85,6 +97,20 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                     child: BackButton(color: Colors.white),
                   ),
                   actions: [
+                    Container(
+                      margin: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Color.lerp(Colors.black38, Colors.transparent, _scrollProgress),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          state is MealDetailLoaded && state.isLiked ? Icons.favorite : Icons.favorite_border,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => context.read<MealDetailBloc>().add(ToggleLike()),
+                      ),
+                    ),
                     Container(
                       margin: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
