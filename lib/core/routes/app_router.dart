@@ -9,10 +9,13 @@ import 'package:meal/features/meals/presentation/bloc/list/meal_event.dart';
 import 'package:meal/features/meals/presentation/pages/meal_detail_page.dart';
 import 'package:meal/features/meals/presentation/pages/meal_list_page.dart';
 import 'package:meal/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:meal/features/splash/presentation/pages/splash_page.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AppRoutes.splash:
+        return MaterialPageRoute(builder: (_) => const SplashPage(), settings: settings);
       case AppRoutes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingPage(), settings: settings);
       case AppRoutes.mealList:
