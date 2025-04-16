@@ -56,6 +56,24 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  icons_launcher: ^3.0.0
+
+# To generate new ic_logo replace the image in the path assets/ic_logo/ic_logo.png then run the command dart run dart run icons_launcher:create
+icons_launcher:
+  image_path: 'assets/icons/app_icon.png'
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+    web:
+      enable: false
+    macos:
+      enable: false
+    windows:
+      enable: false
+    linux:
+      enable: false
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -72,6 +90,7 @@ flutter:
   assets:
     - assets/images/
     - assets/animations/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
