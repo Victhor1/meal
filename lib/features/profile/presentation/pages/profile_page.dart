@@ -14,6 +14,7 @@ class ProfilePage extends StatelessWidget {
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
+            backgroundColor: AppColors.primary,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 fit: StackFit.expand,
@@ -27,7 +28,7 @@ class ProfilePage extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Colors.black54],
+                        colors: [Colors.transparent, Colors.black],
                       ),
                     ),
                   ),
@@ -37,6 +38,7 @@ class ProfilePage extends StatelessWidget {
                 'Mi Perfil',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                   shadows: [Shadow(offset: Offset(0, 1), blurRadius: 3.0, color: Color.fromRGBO(0, 0, 0, 0.75))],
                 ),
               ),
