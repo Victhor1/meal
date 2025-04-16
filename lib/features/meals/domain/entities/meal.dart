@@ -8,6 +8,7 @@ class Meal {
   int? intViews;
   int? intCalories;
   int? intMinutes;
+  double? rating;
   List<String> ingredients;
 
   Meal({
@@ -20,6 +21,7 @@ class Meal {
     this.intViews,
     this.intCalories,
     this.intMinutes,
+    this.rating,
     List<String>? ingredients,
   }) : ingredients = ingredients ?? [];
 

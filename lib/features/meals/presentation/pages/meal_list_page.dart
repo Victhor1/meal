@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/core/routes/app_routes.dart';
+import 'package:meal/core/theme/app_colors.dart';
 import 'package:meal/features/meals/domain/entities/meal.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_bloc.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_event.dart';
@@ -157,49 +158,107 @@ class _MealListPageState extends State<MealListPage> with SingleTickerProviderSt
             arguments: {'id': meal.idMeal, 'image': meal.strMealThumb},
           ),
       child: Container(
+        height: 300,
+        margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
-          color: Colors.black38,
-          borderRadius: BorderRadius.circular(40),
-          boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 10, offset: Offset(0, 10))],
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10, offset: const Offset(0, 5))],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Hero(
-                tag: 'meal-image-${meal.idMeal}',
-                child: extendedImage(imagePath: meal.strMealThumb ?? '', height: 300),
-              ),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(40)),
-                padding: const EdgeInsets.all(16),
-                margin: const EdgeInsets.all(16),
-                child: Row(
+        child: Stack(
+          children: [
+            // Imagen de fondo con efecto de gradiente
+            Hero(
+              tag: 'meal-image-${meal.idMeal}',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            meal.strMeal?.toUpperCase() ?? '',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            meal.strCategory ?? '',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10),
-                          ),
-                        ],
+                    extendedImage(imagePath: meal.strMealThumb ?? '', height: double.infinity, width: double.infinity),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.transparent, Colors.black87],
+                        ),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+
+            // Contenido superpuesto
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Categoría
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        meal.strCategory ?? '',
+                        style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Nombre de la comida
+                    Text(
+                      meal.strMeal ?? '',
+                      style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Información adicional
+                    Row(
+                      children: [
+                        const Icon(Icons.timer_outlined, color: Colors.white70, size: 16),
+                        const SizedBox(width: 4),
+                        Text('${meal.intMinutes} min', style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                        const SizedBox(width: 16),
+                        const Icon(Icons.remove_red_eye, color: Colors.white70, size: 16),
+                        const SizedBox(width: 4),
+                        Text('${meal.intViews} views', style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Botón de favorito
+            Positioned(
+              top: 16,
+              right: 16,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(20)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.star, color: Colors.amber, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${meal.rating}',
+                      style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

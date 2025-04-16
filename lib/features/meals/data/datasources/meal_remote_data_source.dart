@@ -13,6 +13,8 @@ class MealRemoteDataSourceImpl implements MealRemoteDataSource {
 
   MealRemoteDataSourceImpl(this._dioClient);
 
+  int randomNumber() => Random().nextInt(100);
+
   @override
   Future<List<MealModel>> getMeals({String? search}) async {
     try {
@@ -25,8 +27,15 @@ class MealRemoteDataSourceImpl implements MealRemoteDataSource {
       if (response.statusCode == 200) {
         if (response.data['meals'] == null) return [];
 
-        final List<dynamic> data = response.data['meals'];
-        return data.map((meal) => MealModel.fromJson(meal)).toList();
+        List<MealModel> meals = MealModel().fromJsonList(response.data['meals']);
+
+        for (MealModel meal in meals) {
+          meal.intViews = randomNumber();
+          meal.intCalories = randomNumber();
+          meal.intMinutes = randomNumber();
+          meal.rating = randomNumber() / 10;
+        }
+        return meals;
       } else {
         throw Exception('Failed to load meals');
       }
@@ -38,7 +47,6 @@ class MealRemoteDataSourceImpl implements MealRemoteDataSource {
   @override
   Future<MealModel> getMealDetails(String id) async {
     try {
-      int randomNumber() => Random().nextInt(100);
       final response = await _dioClient.dio.get('https://www.themealdb.com/api/json/v1/1/lookup.php?i=$id');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['meals'];
