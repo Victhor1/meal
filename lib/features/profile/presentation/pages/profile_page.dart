@@ -2,8 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:meal/core/theme/app_colors.dart';
 import 'package:meal/shared/widgets/extended_image_widget.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,53 +72,112 @@ class ProfilePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Avatar y nombre
-                  Center(
-                    child: Column(
-                      children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage('https://randomuser.me/api/portraits/women/44.jpg'),
+                  // Avatar y nombre con animación
+                  FadeTransition(
+                    opacity: _animationController,
+                    child: SlideTransition(
+                      position: Tween<Offset>(begin: const Offset(0.0, 0.3), end: Offset.zero).animate(
+                        CurvedAnimation(
+                          parent: _animationController,
+                          curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
                         ),
-                        const SizedBox(height: 16),
-                        const Text('María García', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 4),
-                        Text('maria.garcia@email.com', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      child: Center(
+                        child: Column(
                           children: [
-                            _buildStatItem('Recetas', '42'),
-                            _buildDivider(),
-                            _buildStatItem('Favoritos', '18'),
-                            _buildDivider(),
-                            _buildStatItem('Seguidores', '256'),
+                            const CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage('https://randomuser.me/api/portraits/women/44.jpg'),
+                            ),
+                            const SizedBox(height: 16),
+                            const Text('María García', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 4),
+                            Text('maria.garcia@email.com', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildStatItem('Recetas', '42'),
+                                _buildDivider(),
+                                _buildStatItem('Favoritos', '18'),
+                                _buildDivider(),
+                                _buildStatItem('Seguidores', '256'),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
 
                   const SizedBox(height: 32),
 
-                  // Sección de estadísticas
-                  const Text('Estadísticas', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  _buildStatsCard(),
+                  // Sección de estadísticas con animación
+                  FadeTransition(
+                    opacity: _animationController,
+                    child: SlideTransition(
+                      position: Tween<Offset>(begin: const Offset(0.0, 0.3), end: Offset.zero).animate(
+                        CurvedAnimation(
+                          parent: _animationController,
+                          curve: const Interval(0.2, 0.8, curve: Curves.easeOut),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Estadísticas', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 16),
+                          _buildStatsCard(),
+                        ],
+                      ),
+                    ),
+                  ),
 
                   const SizedBox(height: 32),
 
-                  // Sección de preferencias
-                  const Text('Preferencias', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  _buildPreferencesCard(),
+                  // Sección de preferencias con animación
+                  FadeTransition(
+                    opacity: _animationController,
+                    child: SlideTransition(
+                      position: Tween<Offset>(begin: const Offset(0.0, 0.3), end: Offset.zero).animate(
+                        CurvedAnimation(
+                          parent: _animationController,
+                          curve: const Interval(0.4, 1.0, curve: Curves.easeOut),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Preferencias', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 16),
+                          _buildPreferencesCard(),
+                        ],
+                      ),
+                    ),
+                  ),
 
                   const SizedBox(height: 32),
 
-                  // Sección de actividad reciente
-                  const Text('Actividad Reciente', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 16),
-                  _buildRecentActivityCard(),
+                  // Sección de actividad reciente con animación
+                  FadeTransition(
+                    opacity: _animationController,
+                    child: SlideTransition(
+                      position: Tween<Offset>(begin: const Offset(0.0, 0.3), end: Offset.zero).animate(
+                        CurvedAnimation(
+                          parent: _animationController,
+                          curve: const Interval(0.6, 1.0, curve: Curves.easeOut),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Actividad Reciente', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 16),
+                          _buildRecentActivityCard(),
+                        ],
+                      ),
+                    ),
+                  ),
 
                   const SizedBox(height: 32),
                 ],

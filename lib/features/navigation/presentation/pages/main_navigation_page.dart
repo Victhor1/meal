@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/core/injection_container.dart' as di;
+import 'package:meal/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_bloc.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_event.dart';
 import 'package:meal/features/meals/presentation/pages/meal_list_page.dart';
@@ -18,7 +19,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   final List<Widget> _pages = [
     BlocProvider(create: (_) => di.sl<MealBloc>()..add(LoadMeals()), child: const MealListPage()),
-    const Center(child: Text('Favoritos')), // todo: reemplazar por FavoritesPage()
+    FavoritesPage(),
     ProfilePage(),
   ];
 
