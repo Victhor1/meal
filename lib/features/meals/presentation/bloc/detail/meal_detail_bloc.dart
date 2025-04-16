@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meal/features/favorites/presentation/block/favorites_event.dart';
 import 'package:meal/features/meals/domain/repositories/favorites_repository.dart';
 import 'package:meal/features/meals/domain/usecases/get_meal_details.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_event.dart';
@@ -43,6 +44,9 @@ class MealDetailBloc extends Bloc<MealDetailEvent, MealDetailState> {
           emit(MealDetailToggleLike('Added to favorites'));
         } else {
           await favoritesRepository.removeFavorite(currentState.meal.idMeal ?? '');
+          emit(MealDetailUnLike('${currentState.meal.strMeal} removed from favorites'));
+
+          event.externalFavoritesEmiter?.call(FavoritesMealRemoved(currentState.meal));
         }
 
         emit(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal/core/injection_container.dart' as di;
 import 'package:meal/core/routes/app_routes.dart';
+import 'package:meal/features/favorites/presentation/block/favorites_bloc.dart';
+import 'package:meal/features/favorites/presentation/block/favorites_event.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_bloc.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_event.dart';
 import 'package:meal/features/meals/presentation/bloc/list/meal_bloc.dart';
@@ -29,11 +31,13 @@ class AppRouter {
       case AppRoutes.mealDetail:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder:
-              (_) => BlocProvider(
-                create: (_) => di.sl<MealDetailBloc>()..add(LoadMealDetail(args['id'] as String)),
-                child: const MealDetailPage(),
-              ),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => di.sl<MealDetailBloc>()..add(LoadMealDetail(args['id'] as String))),
+              BlocProvider(create: (_) => di.sl<FavoritesBloc>()..add(LoadFavorites())),
+            ],
+            child: const MealDetailPage(),
+          ),
           settings: settings,
         );
       default:

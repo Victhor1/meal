@@ -7,6 +7,8 @@ import 'package:meal/core/theme/app_colors.dart';
 import 'package:meal/core/utils/logger.dart';
 import 'package:meal/core/utils/share_util.dart';
 import 'package:meal/core/utils/url_launcher_util.dart';
+import 'package:meal/features/favorites/presentation/block/favorites_bloc.dart';
+import 'package:meal/features/favorites/presentation/block/favorites_event.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_bloc.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_event.dart';
 import 'package:meal/features/meals/presentation/bloc/detail/meal_detail_state.dart';
@@ -84,6 +86,16 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
               animationDuration: const Duration(milliseconds: 200),
             ).show(context);
           }
+
+          if (state is MealDetailUnLike) {
+            CherryToast.info(
+              title: Text(state.message),
+              toastPosition: Position.bottom,
+              animationCurve: Curves.easeInOut,
+              animationType: AnimationType.fromBottom,
+              animationDuration: const Duration(milliseconds: 200),
+            ).show(context);
+          }
         },
         child: BlocBuilder<MealDetailBloc, MealDetailState>(
           builder: (context, state) {
@@ -114,7 +126,11 @@ class _MealDetailPageState extends State<MealDetailPage> with SingleTickerProvid
                           state is MealDetailLoaded && state.isLiked ? Icons.favorite : Icons.favorite_border,
                           color: Colors.white,
                         ),
-                        onPressed: () => context.read<MealDetailBloc>().add(ToggleLike()),
+                        onPressed: () =>
+                            context.read<MealDetailBloc>().add(ToggleLike(externalFavoritesEmiter: (event) {
+                          final favoritesBloc = context.read<FavoritesBloc>();
+                          favoritesBloc.add(event as FavoritesMealRemoved);
+                        })),
                       ),
                     ),
                     Container(

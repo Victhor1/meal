@@ -17,3 +17,8 @@ class FavoritesError extends FavoritesState {
   final String message;
   FavoritesError(this.message);
 }
+
+class FavoritesUnLike extends FavoritesState {
+  final Meal meal;
+  FavoritesUnLike(this.meal);
+}

@@ -25,3 +25,9 @@ class MealDetailToggleLike extends MealDetailState {
 
   MealDetailToggleLike(this.message);
 }
+
+class MealDetailUnLike extends MealDetailState {
+  final String message;
+
+  MealDetailUnLike(this.message);
+}

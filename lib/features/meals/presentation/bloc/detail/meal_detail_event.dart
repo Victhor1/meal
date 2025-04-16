@@ -11,4 +11,7 @@ class SelectInstructionsTab extends MealDetailEvent {}
 
 class OpenYoutubeVideo extends MealDetailEvent {}
 
-class ToggleLike extends MealDetailEvent {}
+class ToggleLike extends MealDetailEvent {
+  final void Function(dynamic state)? externalFavoritesEmiter;
+  ToggleLike({this.externalFavoritesEmiter});
+}
