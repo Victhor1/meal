@@ -38,8 +38,8 @@ La aplicación sigue los principios de Clean Architecture con una estructura de 
 
 ```
 lib/
-├── core/              # Utilidades y configuraciones core
-├── features/          # Módulos de la aplicación
+├── core/             # Utilidades y configuraciones core
+├── features/         # Módulos de la aplicación
 │   ├── meals/        # Feature de comidas
 │   └── favorites/    # Feature de favoritos
 └── shared/           # Widgets y utilidades compartidas
